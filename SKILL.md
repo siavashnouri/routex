@@ -1,9 +1,9 @@
 ---
-name: fastschema
-description: Use when working with the fastschema package for class-based routing with dynamic Pydantic model generation in FastAPI. Covers RouteBase, RouteField, FieldConfig, @route decorator, route_factory, SelfDerivedModel, Chain, and ORM integration (SQLModel, Beanie).
+name: formaxapi
+description: Use when working with the formaxapi package for class-based routing with dynamic Pydantic model generation in FastAPI. Covers RouteBase, RouteField, FieldConfig, @route decorator, route_factory, SelfDerivedModel, Chain, and ORM integration (SQLModel, Beanie).
 ---
 
-# fastschema
+# formaxapi
 
 Class-based routing with dynamic Pydantic model generation for FastAPI.
 
@@ -13,7 +13,7 @@ Class-based routing with dynamic Pydantic model generation for FastAPI.
 Defines how a field behaves per schema type. Extend to create schema types:
 
 ```python
-from fastschema import FieldConfig
+from formaxapi import FieldConfig
 
 class Add(FieldConfig):
     required = True
@@ -31,7 +31,7 @@ Key attributes: `required`, `default`, `default_factory`, `alias`, `description`
 Inherits from Pydantic's `FieldInfo`. Accepts both Pydantic params and schema configs:
 
 ```python
-from fastschema import RouteField
+from formaxapi import RouteField
 
 # Schema configs (FieldConfig instances) + Pydantic params
 name: str = RouteField(
@@ -47,7 +47,7 @@ name: str = RouteField(
 Base class for route definitions. Provides schema generation and introspection:
 
 ```python
-from fastschema import RouteBase, route
+from formaxapi import RouteBase, route
 
 class UserRoute(RouteBase):
     name: str = RouteField(add=Add(), edit=Edit())
@@ -67,7 +67,7 @@ Marks methods as endpoints. Params: `path`, `method`, `name`, `description`, `st
 Collects all `@route` methods into a FastAPI `APIRouter`:
 
 ```python
-from fastschema import route_factory
+from formaxapi import route_factory
 app.include_router(route_factory(UserRoute, ProductRoute))
 ```
 
@@ -75,7 +75,7 @@ app.include_router(route_factory(UserRoute, ProductRoute))
 Derive a field's schema from the route's own fields (for bulk operations):
 
 ```python
-from fastschema import SelfDerivedModel
+from formaxapi import SelfDerivedModel
 
 items: list = RouteField(
     bulk_add=BulkAdd(default=SelfDerivedModel(schema="add", exclude_fields=["email"]))
@@ -86,7 +86,7 @@ items: list = RouteField(
 Compose multiple functions for `apply_func`:
 
 ```python
-from fastschema import Chain
+from formaxapi import Chain
 
 title: str = RouteField(
     add=Add(apply_func=Chain(strip, upper, remove_spaces))
@@ -97,7 +97,7 @@ title: str = RouteField(
 
 ### SQLModel
 ```python
-from fastschema import RouteBase, RouteField
+from formaxapi import RouteBase, RouteField
 from sqlmodel import SQLModel, Field
 
 class UserRoute(RouteBase, SQLModel, table=True):
@@ -108,7 +108,7 @@ class UserRoute(RouteBase, SQLModel, table=True):
 
 ### Beanie
 ```python
-from fastschema import RouteBase, RouteField
+from formaxapi import RouteBase, RouteField
 from beanie import Document
 
 class UserRoute(RouteBase, Document):

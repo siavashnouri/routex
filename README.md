@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="fastschema.png" alt="fastschema" width="400">
+  <img src="formaxapi.png" alt="formaxapi" width="400">
 </p>
 
-# fastschema
+# formaxapi
 
 Class-based routing with dynamic Pydantic model generation for FastAPI.
 
@@ -10,9 +10,9 @@ Class-based routing with dynamic Pydantic model generation for FastAPI.
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688.svg)](https://fastapi.tiangolo.com/)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
-## Why fastschema?
+## Why formaxapi?
 
-Traditional FastAPI development scatters code across Pydantic models, route handlers, and router configuration. **fastschema** consolidates everything into a single class:
+Traditional FastAPI development scatters code across Pydantic models, route handlers, and router configuration. **formaxapi** consolidates everything into a single class:
 
 - **Routes inside the class** — defined with `@route` decorator
 - **Typed input** — `UserRoute.schema("add")` auto-validates request body
@@ -22,7 +22,7 @@ Traditional FastAPI development scatters code across Pydantic models, route hand
 - **Works with any ORM** — Pydantic, Beanie, SQLAlchemy/SQLModel
 
 ```bash
-pip install fastschema
+pip install formaxapi
 ```
 
 ---
@@ -32,7 +32,7 @@ pip install fastschema
 ```python
 from __future__ import annotations
 from fastapi import FastAPI, Request
-from fastschema import FieldConfig, RouteField, RouteBase, route, route_factory
+from formaxapi import FieldConfig, RouteField, RouteBase, route, route_factory
 
 app = FastAPI()
 
@@ -92,7 +92,7 @@ app.include_router(route_factory(UserRoute))
 ## Installation
 
 ```bash
-pip install fastschema
+pip install formaxapi
 ```
 
 **Optional dependencies:**
@@ -112,7 +112,7 @@ pip install sqlmodel aiosqlite
 ### 1. Define Schema Configs
 
 ```python
-from fastschema import FieldConfig
+from formaxapi import FieldConfig
 
 class Add(FieldConfig):
     required = True
@@ -127,7 +127,7 @@ class Output(FieldConfig):
 ### 2. Define Route Class
 
 ```python
-from fastschema import RouteField, RouteBase, route
+from formaxapi import RouteField, RouteBase, route
 
 class UserRoute(RouteBase):
     name: str = RouteField(add=Add(), edit=Edit(), output=Output(), min_length=1)
@@ -145,7 +145,7 @@ class UserRoute(RouteBase):
 
 ```python
 from fastapi import FastAPI
-from fastschema import route_factory
+from formaxapi import route_factory
 
 app = FastAPI()
 app.include_router(route_factory(UserRoute))
@@ -160,7 +160,7 @@ app.include_router(route_factory(UserRoute))
 `FieldConfig` defines how a field behaves in different schema contexts:
 
 ```python
-from fastschema import FieldConfig
+from formaxapi import FieldConfig
 
 class Add(FieldConfig):
     required = True
@@ -196,7 +196,7 @@ class Output(FieldConfig):
 `RouteField` inherits from Pydantic's `FieldInfo`, so it works everywhere:
 
 ```python
-from fastschema import RouteField, FieldConfig
+from formaxapi import RouteField, FieldConfig
 
 class Add(FieldConfig):
     required = True
@@ -273,7 +273,7 @@ UserRoute.field_names()        # => ["name"]
 Define endpoints inside the class:
 
 ```python
-from fastschema import route
+from formaxapi import route
 
 class UserRoute(RouteBase):
     @classmethod
@@ -305,7 +305,7 @@ class UserRoute(RouteBase):
 Collect all routes into a FastAPI router:
 
 ```python
-from fastschema import route_factory
+from formaxapi import route_factory
 
 router = route_factory(UserRoute, ProductRoute)
 app.include_router(router)
@@ -322,7 +322,7 @@ Full example without any ORM:
 ```python
 from __future__ import annotations
 from fastapi import FastAPI, Request
-from fastschema import FieldConfig, RouteField, RouteBase, route, route_factory
+from formaxapi import FieldConfig, RouteField, RouteBase, route, route_factory
 from pydantic import BaseModel, field_validator
 
 app = FastAPI()
@@ -383,7 +383,7 @@ Full example with Beanie ODM:
 ```python
 from __future__ import annotations
 from fastapi import FastAPI, Request
-from fastschema import FieldConfig, RouteField, RouteBase, route, route_factory
+from formaxapi import FieldConfig, RouteField, RouteBase, route, route_factory
 from beanie import Document, PydanticObjectId
 from contextlib import asynccontextmanager
 from pymongo import AsyncMongoClient
@@ -469,7 +469,7 @@ Full example with SQLModel:
 ```python
 from __future__ import annotations
 from fastapi import FastAPI, Request
-from fastschema import FieldConfig, RouteField, RouteBase, route, route_factory
+from formaxapi import FieldConfig, RouteField, RouteBase, route, route_factory
 from sqlmodel import SQLModel, Field, Session, create_engine
 from typing import ClassVar
 
@@ -562,7 +562,7 @@ app.include_router(route_factory(UserRoute))
 Chain multiple functions for `apply_func`:
 
 ```python
-from fastschema import FieldConfig, RouteField, Chain
+from formaxapi import FieldConfig, RouteField, Chain
 
 def strip(v):
     return v.strip() if isinstance(v, str) else v
@@ -591,7 +591,7 @@ class ProductRoute(RouteBase):
 Derive a field's schema from the route's own fields:
 
 ```python
-from fastschema import FieldConfig, RouteField, RouteBase, SelfDerivedModel
+from formaxapi import FieldConfig, RouteField, RouteBase, SelfDerivedModel
 
 class Add(FieldConfig):
     required = True
@@ -832,7 +832,7 @@ class Chain:
 
 ## Skills
 
-fastschema includes a `SKILL.md` file for AI code agents (Codex, MiMo, etc.). This file provides agents with specialized knowledge to work effectively with the fastschema package.
+formaxapi includes a `SKILL.md` file for AI code agents (Codex, MiMo, etc.). This file provides agents with specialized knowledge to work effectively with the formaxapi package.
 
 **What it covers:**
 - Core concepts (FieldConfig, RouteField, RouteBase, @route, route_factory)
@@ -840,7 +840,7 @@ fastschema includes a `SKILL.md` file for AI code agents (Codex, MiMo, etc.). Th
 - Advanced features (SelfDerivedModel, Chain, ClassVar, validators)
 - Common CRUD and bulk operation patterns
 
-**Usage:** Agents automatically discover and load the skill when working with fastschema-related tasks. The skill file is located at the project root alongside `README.md`.
+**Usage:** Agents automatically discover and load the skill when working with formaxapi-related tasks. The skill file is located at the project root alongside `README.md`.
 
 ---
 
