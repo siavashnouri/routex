@@ -182,9 +182,13 @@ class ModelFactory:
         if sdm.container == "dict":
             field_type = derived
             default = {} if not sdm.is_optional else None
+            if sdm.use_schema_default:
+                default = derived()
         else:
             field_type = list[derived]
             default = [] if not sdm.is_optional else None
+            if sdm.use_schema_default:
+                default = [derived(),]
         return field_type, default
 
     @staticmethod

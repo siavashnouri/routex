@@ -72,7 +72,7 @@ app.include_router(route_factory(UserRoute, ProductRoute))
 ```
 
 ### SelfDerivedModel
-Derive a field's schema from the route's own fields (for bulk operations). Supports `list` and `dict` containers:
+Derive a field's schema from the route's own fields (for bulk operations). Supports `list`/`dict` containers and auto-populating defaults from schema field defaults:
 
 ```python
 from formaxapi import SelfDerivedModel
@@ -85,6 +85,12 @@ items: list = RouteField(
 # dict container
 mapping: dict = RouteField(
     bulk_add=BulkAdd(default=SelfDerivedModel(schema="add", container="dict"))
+)
+
+# use_schema_default: auto-populate default from schema field defaults
+# If age has sort=Sort(default=1), sort defaults to {"age": 1}
+sort: dict = RouteField(
+    get=Get(default=SelfDerivedModel(schema="sort", container="dict", use_schema_default=True))
 )
 ```
 

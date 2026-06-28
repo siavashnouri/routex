@@ -16,13 +16,15 @@ class SelfDerivedModel:
     """
 
     def __init__(self, schema: str, is_optional: bool = True, format: str = 'model',
-                 include_fields: list[str] | None = None, exclude_fields: list[str] | None = None, container:Literal["list", "dict"] = "list"):
+                 include_fields: list[str] | None = None, exclude_fields: list[str] | None = None,
+                  container:Literal["list", "dict"] = "list", use_schema_default:bool=False):
         self.schema = schema
         self.is_optional = is_optional
         self.format = format
         self.include_fields = include_fields
         self.exclude_fields = exclude_fields
         self.container=container
+        self.use_schema_default = use_schema_default
 
     def __repr__(self):
         return f"SelfDerivedModel(schema={self.schema!r}, include={self.include_fields}, exclude={self.exclude_fields})"

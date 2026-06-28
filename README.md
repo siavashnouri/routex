@@ -588,7 +588,7 @@ class ProductRoute(RouteBase):
 
 ### SelfDerivedModel - Bulk Operations
 
-Derive a field's schema from the route's own fields. Supports `list` and `dict` containers:
+Derive a field's schema from the route's own fields. Supports `list` and `dict` containers, and auto-populating defaults from the schema:
 
 ```python
 from formaxapi import FieldConfig, RouteField, RouteBase, SelfDerivedModel
@@ -596,18 +596,12 @@ from formaxapi import FieldConfig, RouteField, RouteBase, SelfDerivedModel
 class Add(FieldConfig):
     required = True
 
-class Output(FieldConfig):
+class Sort(FieldConfig):
     pass
 
-class BulkAdd(FieldConfig):
-    required = True
-
-class BulkEdit(FieldConfig):
-    default = None
-
 class UserRoute(RouteBase):
-    name: str = RouteField(add=Add(), output=Output())
-    email: str = RouteField(add=Add(), output=Output())
+    name: str = RouteField(add=Add())
+    age: int = RouteField(add=Add(), sort=Sort(default=1))
 
     # list container (default)
     items: list = RouteField(
@@ -623,8 +617,14 @@ class UserRoute(RouteBase):
         ),
     )
 
+    # use_schema_default: auto-populate default from schema field defaults
+    # age has sort=Sort(default=1), so sort defaults to {"age": 1}
+    sort: dict = RouteField(
+        get=Get(default=SelfDerivedModel(schema="sort", container="dict", use_schema_default=True))
+    )
+
 # UserRoute.schema("bulk_add") => items: list[name: str]  (email excluded)
-# UserRoute.schema("bulk_add") => mapping: dict[str, {name: str, email: str}]
+# sort default value => {"age": 1} (from Sort(default=1) on age field)
 ```
 
 ---
@@ -808,6 +808,7 @@ class SelfDerivedModel:
         include_fields: list[str] | None = None,
         exclude_fields: list[str] | None = None,
         container: str = "list",  # "list" or "dict"
+        use_schema_default: bool = False,  # auto-populate default from schema field defaults
     ): ...
 ```
 

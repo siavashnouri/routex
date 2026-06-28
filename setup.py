@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as f:
 
 setup(
     name="formaxapi",
-    version="0.1.11",
+    version="0.1.12",
     author="EXO",
     description="Class-based routing with dynamic Pydantic model generation for FastAPI",
     long_description=long_description,
